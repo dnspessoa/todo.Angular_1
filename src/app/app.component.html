@@ -1,7 +1,27 @@
 <h1>
-    {{title}}
+  {{title}}
 </h1>
 
+<!-- Explicação binding -->
+<!-- () = HTML > TS
+[] = TS > HTML
+[()] = TS <> HTML -->
+
 <ul>
-  <li *ngFor="let item of todos">{{item}} - <button>Concluir</button> - <button>Remover</button></li>
+  <p *ngIf="todos.length==0"><small>Não tem nenhuma tarefa hoje!</small></p>
+  <li *ngFor="let item of todos">
+    {{item.title}} - {{item.id}}
+    <button *ngIf="!item.done" (click)="markAsDone(item)">Concluir</button> -
+    <button *ngIf="item.done" (click)="markAsUndone(item)">Refazer</button> -
+    <button (click)="remove(item)">Remover</button>
+  </li>
 </ul>
+
+<form [formGroup]="form">
+  <fieldset>
+    <label for="">Tarefa: </label>
+    <input type="text" name="" id="" placeholder="Título" maxLength="60" formControlName="title">
+    <small *ngIf="form.controls.title.invalid && !form.controls.pristine">Este campo deve conter entre 3 e 60 caracteres</small>
+    <button [disabled]="form.invalid" (click)="add()">Salvar</button>
+  </fieldset>
+</form>
