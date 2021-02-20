@@ -28,7 +28,10 @@ export class AppComponent {
 
     // this.todos.push(new Todo(1, 'Tarefa 1', false));    
     // this.todos.push(new Todo(2, 'Tarefa 2', false));    
-    // this.todos.push(new Todo(3, 'Tarefa 3', true));    
+    // this.todos.push(new Todo(3, 'Tarefa 3', true));  
+    
+    //Recupera os itens do local storage
+    this.load();
   }
 
   add(){
@@ -50,14 +53,30 @@ export class AppComponent {
       if (index !== -1) {
         this.todos.splice(index, 1);
       }
+
+      this.save();
   }
 
   markAsDone(todo: Todo){
     todo.done = true;
+
+    this.save();
+  }
+
+  markAsUnDone(todo: Todo){
+    todo.done = false;
+
+    this.save();
   }
 
   save () {
     const data = JSON.stringify(this.todos);
     localStorage.setItem('todos', data);
+  }
+
+  load() {
+    const data = localStorage.getItem('todos');
+    const itens = JSON.parse(data);
+    this.todos = itens;
   }
 }
